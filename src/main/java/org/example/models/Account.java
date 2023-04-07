@@ -1,4 +1,4 @@
-package org.example;
+package org.example.models;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class Account {
     private String person;
     private BigDecimal balance;
+    private Bank bank;
 
     @Override
     public boolean equals(Object o) {
