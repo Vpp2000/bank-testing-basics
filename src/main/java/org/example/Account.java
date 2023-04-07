@@ -3,6 +3,7 @@ package org.example;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import org.example.exceptions.InsuficcientMoneyException;
 
 import java.math.BigDecimal;
 
@@ -23,6 +24,7 @@ public class Account {
     }
 
     public void debit(BigDecimal amount) {
+        if(this.balance.compareTo(amount) < 0) throw new InsuficcientMoneyException("Insufficient money");
         this.balance = this.balance.subtract(amount);
     }
 
