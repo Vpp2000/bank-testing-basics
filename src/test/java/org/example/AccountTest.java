@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -140,6 +141,18 @@ class AccountTest {
         bank.addAccount(source);
         bank.addAccount(destiny);
 
+        assertAll(
+                () -> assertEquals(2, bank.getAccounts().size()),
+                () -> assertEquals("Scotiabank", source.getBank().getName()),
+                () -> assertEquals("Victor",bank.getAccounts().stream()
+                        .filter(c -> c.getPerson().equals("Victor"))
+                        .findFirst()
+                        .get()
+                        .getPerson()),
+                () -> assertTrue(bank.getAccounts().stream().anyMatch(c -> c.getPerson().equals("Victor")))
+        );
+
+        /*
         assertEquals(2, bank.getAccounts().size());
         assertEquals("Scotiabank", source.getBank().getName());
         assertEquals("Victor",bank.getAccounts().stream()
@@ -149,5 +162,6 @@ class AccountTest {
                 .getPerson());
 
         assertTrue(bank.getAccounts().stream().anyMatch(c -> c.getPerson().equals("Victor")));
+        */
     }
 }
