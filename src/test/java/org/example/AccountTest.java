@@ -75,9 +75,10 @@ class AccountTest {
         Account creditAccount = Account.builder()
                 .person("Victor")
                 .balance(new BigDecimal("1000.125"))
+                //.balance(null)
                 .build();
+        assertNotNull(creditAccount.getBalance(), "The amout of money cannot be null");
         creditAccount.credit(new BigDecimal("100"));
-        assertNotNull(creditAccount.getBalance());
         assertEquals(1100, creditAccount.getBalance().intValue());
         assertEquals("1100.125", creditAccount.getBalance().toPlainString());
 
