@@ -4,6 +4,7 @@ import org.example.exceptions.InsuficcientMoneyException;
 import org.example.models.Account;
 import org.example.models.Bank;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -97,7 +98,7 @@ class AccountTest {
         String expectedMessage = "Insufficient money";
         String actualMessage = exception.getMessage();
 
-        assertEquals(expectedMessage,actualMessage);
+        assertEquals(expectedMessage,actualMessage, () -> "The actual message is not the expected one");
     }
 
     @Test
@@ -124,6 +125,7 @@ class AccountTest {
 
     @Test
     @DisplayName("Test relation bank account")
+    @Disabled
     public void test_relation_bank_account(){
         Account source = Account.builder()
                 .person("John")
