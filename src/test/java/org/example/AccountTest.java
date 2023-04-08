@@ -1,12 +1,17 @@
 package org.example;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.InsuficcientMoneyException;
 import org.example.models.Account;
 import org.example.models.Bank;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.math.BigDecimal;
 
@@ -17,15 +22,34 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// esta anotacion hace que solo se cree una instancia para todos los tests
+// asi los metodos beforeAll y afterAll pueden ser estaticos
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AccountTest {
-    static Account account;
+    Account account;
 
     @BeforeAll
-    static void setupAccount() {
+    static void beforeAll() {
+        System.out.println("Initializing account class");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println("End of everything, maybe cause we need to close some resource");
+    }
+
+    @BeforeEach
+     void setupAccount() {
+        System.out.println("Setup account");
         account = Account.builder()
                 .person("Victor")
                 .balance(new BigDecimal("450.125"))
                 .build();
+    }
+
+    @AfterEach
+    void aftearEachTest() {
+        System.out.println("FInished test");
     }
 
     @Test
