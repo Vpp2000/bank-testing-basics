@@ -66,6 +66,7 @@ class AccountTest {
         String expected = "Victor";
         String actual = account.getPerson();
 
+        assertTrue(false);
         assertEquals(expected, actual);
         // assertTrue(actual.equals(expected));
     }

@@ -15,8 +15,8 @@ public class TimeOutTesting {
     @DisplayName("Test with simple timeout in seconds")
     @Timeout(2)
     public void test_simple_timeout() throws InterruptedException {
-        TimeUnit.SECONDS.sleep(1);
-        assertTrue(true);
+        TimeUnit.SECONDS.sleep(3);
+        assertTrue(false);
     }
 
     @Test
