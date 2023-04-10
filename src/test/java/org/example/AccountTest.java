@@ -13,8 +13,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -101,6 +107,56 @@ class AccountTest {
             assertEquals(900, debitAccount.getBalance().intValue());
             assertEquals("900.125", debitAccount.getBalance().toPlainString());
         }
+
+        @Nested
+        class ParametrizedTests {
+            @ParameterizedTest(name = "n° {index} executing with value {0} - {argumentsWithNames}")
+            @ValueSource(strings = {"100", "200", "300", "400", "500", "700", "1000"})
+            @DisplayName("Test debit account with multiple amounts")
+            void test_debit_account_with_multiple_amounts(String amount) {
+                System.out.println("amount: " + amount);
+                Account debitAccount = Account.builder()
+                        .person("Victor")
+                        .balance(new BigDecimal("1000.500"))
+                        .build();
+                debitAccount.debit(new BigDecimal(amount));
+
+                assertNotNull(debitAccount.getBalance());
+                assertTrue(debitAccount.getBalance().compareTo(BigDecimal.ZERO) > 0);
+            }
+
+            @ParameterizedTest(name = "n° {index} executing with value {0} - {argumentsWithNames}")
+            @CsvFileSource(resources = "/data.csv")
+            @DisplayName("Test debit account with multiple amounts from CSV FILE")
+            void test_debit_account_with_multiple_amounts_from_csv_file(String index, String amount) {
+                System.out.println("index: " + index + "--" +"amount: " + amount);
+                Account debitAccount = Account.builder()
+                        .person("Victor")
+                        .balance(new BigDecimal("1000.500"))
+                        .build();
+                debitAccount.debit(new BigDecimal(amount));
+
+                assertNotNull(debitAccount.getBalance());
+                assertTrue(debitAccount.getBalance().compareTo(BigDecimal.ZERO) > 0);
+            }
+            /*
+            @ParameterizedTest(name = "n° {index} executing with value {0} - {argumentsWithNames}")
+            @MethodSource("amountList")
+            @DisplayName("Test debit account with multiple amounts from method")
+            void test_debit_account_with_multiple_amounts_from_method(String amount) {
+                Account debitAccount = Account.builder()
+                        .person("Victor")
+                        .balance(new BigDecimal("1000.500"))
+                        .build();
+                debitAccount.debit(new BigDecimal(amount));
+
+                assertNotNull(debitAccount.getBalance());
+                assertTrue(debitAccount.getBalance().compareTo(BigDecimal.ZERO) > 0);
+            }
+*/
+        }
+
+
 
         @Test
         @DisplayName("Test credit account")
@@ -204,5 +260,7 @@ class AccountTest {
         */
         }
     }
-
+    static List<String> amountList(){
+        return Arrays.asList("100", "200", "300", "1000");
+    }
 }
