@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -96,6 +97,7 @@ class AccountTest {
 
         @Test
         @DisplayName("Test debit account")
+        @Tag("operations")
         void test_debit_account() {
             Account debitAccount = Account.builder()
                     .person("Victor")
@@ -109,6 +111,8 @@ class AccountTest {
         }
 
         @Nested
+        @Tag("param")
+        @Tag("operations")
         class ParametrizedTests {
             @ParameterizedTest(name = "n° {index} executing with value {0} - {argumentsWithNames}")
             @ValueSource(strings = {"100", "200", "300", "400", "500", "700", "1000"})
@@ -156,8 +160,6 @@ class AccountTest {
 */
         }
 
-
-
         @Test
         @DisplayName("Test credit account")
         void test_credit_account() {
@@ -189,31 +191,12 @@ class AccountTest {
             assertEquals(expectedMessage,actualMessage, () -> "The actual message is not the expected one");
         }
 
-        @Test
-        @DisplayName("Test money transference between accounts")
-        public void test_money_transference_between_accounts(){
-            Account source = Account.builder()
-                    .person("John")
-                    .balance(new BigDecimal("800.0"))
-                    .build();
 
-
-            Account destiny = Account.builder()
-                    .person("Victor")
-                    .balance(new BigDecimal("450.0"))
-                    .build();
-
-            Bank bank = new Bank();
-            bank.setName("Scotiabank");
-
-            bank.transfer(source, destiny, new BigDecimal("100.0"));
-            assertEquals("700.0", source.getBalance().toPlainString());
-            assertEquals("550.0", destiny.getBalance().toPlainString());
-        }
     }
 
 
     @Nested
+    @Tag("bank")
     class BankTesting{
         @Test
         @DisplayName("Test relation bank account")
@@ -247,6 +230,8 @@ class AccountTest {
                     () -> assertTrue(bank.getAccounts().stream().anyMatch(c -> c.getPerson().equals("Victor")))
             );
 
+
+
         /*
         assertEquals(2, bank.getAccounts().size());
         assertEquals("Scotiabank", source.getBank().getName());
@@ -258,6 +243,28 @@ class AccountTest {
 
         assertTrue(bank.getAccounts().stream().anyMatch(c -> c.getPerson().equals("Victor")));
         */
+        }
+
+        @Test
+        @DisplayName("Test money transference between accounts")
+        public void test_money_transference_between_accounts(){
+            Account source = Account.builder()
+                    .person("John")
+                    .balance(new BigDecimal("800.0"))
+                    .build();
+
+
+            Account destiny = Account.builder()
+                    .person("Victor")
+                    .balance(new BigDecimal("450.0"))
+                    .build();
+
+            Bank bank = new Bank();
+            bank.setName("Scotiabank");
+
+            bank.transfer(source, destiny, new BigDecimal("100.0"));
+            assertEquals("700.0", source.getBalance().toPlainString());
+            assertEquals("550.0", destiny.getBalance().toPlainString());
         }
     }
     static List<String> amountList(){
