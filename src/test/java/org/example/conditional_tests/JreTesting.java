@@ -3,6 +3,7 @@ package org.example.conditional_tests;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.JRE;
 
@@ -41,4 +42,5 @@ public class JreTesting {
     public void test_for_java_15_or_11() {
         assertTrue(true);
     }
+
 }
